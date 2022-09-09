@@ -8,7 +8,7 @@ class Gameplay:
         self.actual_try = 0
 
     # Show func
-    def Button_Click(self, button):
+    def Button_Click(self, button_id, buttons_array):
         self.actual_try = self.actual_try + 1
 
         if self.actual_try % 2 == 0:
@@ -16,4 +16,4 @@ class Gameplay:
         else:
             self.current_mark = "o"
 
-        button.configure(text=self.current_mark)
+        buttons_array[button_id - 1].configure(text=self.current_mark)

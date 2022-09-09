@@ -32,7 +32,7 @@ class Frame:
                 inc = inc + 1
 
                 self.buttons_Array.append(tk.Button(Game_Board, text="", width=15, height=7))
-                self.buttons_Array[inc - 1].configure(command=lambda: self.gameplay.Button_Click(self.buttons_Array[inc - 1]))
+                self.buttons_Array[inc - 1].configure(command=lambda button_id=inc: self.gameplay.Button_Click(button_id, self.buttons_Array))
                 self.buttons_Array[inc - 1].grid(row=i, column=j)
 
         # Show the frame
