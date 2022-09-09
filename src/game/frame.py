@@ -9,6 +9,7 @@ class Frame:
     def __init__(self, title, size):
         self.title = title
         self.size = size
+        self.gameplay = Gameplay()
         self.buttons_Array = []
 
     # Show func
@@ -22,18 +23,18 @@ class Frame:
         Game_Frame.title(self.title)
         Game_Frame.resizable(False, False)
 
+        # Board
+        Game_Board = tk.Frame(Game_Frame, width=350, height=350)
+
         # Buttons (9)
         for i in range(3):
             for j in range(3):
                 inc = inc + 1
 
-                if inc % 2 == 0:
-                    new_text = "X"
-                else:
-                    new_text = "O"
-
-                self.buttons_Array.append(tk.Button(Game_Frame, text=new_text, width=15, height=7))
+                self.buttons_Array.append(tk.Button(Game_Board, text="", width=15, height=7))
+                self.buttons_Array[inc - 1].configure(command=lambda: self.gameplay.Button_Click(self.buttons_Array[inc - 1]))
                 self.buttons_Array[inc - 1].grid(row=i, column=j)
 
         # Show the frame
+        Game_Board.pack(padx=10, pady=25)
         Game_Frame.mainloop()
