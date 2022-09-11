@@ -16,6 +16,7 @@ class Frame:
     def show(self):
         # Variables
         inc = 0
+        self.gameplay.game_running = True
 
         # Frame
         Game_Frame = tk.Tk()

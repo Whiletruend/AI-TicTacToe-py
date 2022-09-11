@@ -10,7 +10,9 @@ class Gameplay:
         self.current_mark = "X"
         self.buttons_clicked = []
         self.actual_board = []
-        self.actual_try = 0
+        self.current_try = 0
+        self.game_win = False
+        self.game_running = False
 
         for i in range(3):
             row = []
@@ -23,17 +25,10 @@ class Gameplay:
         if buttons_array[button_id - 1] in self.buttons_clicked:
             pass
         else:
-            # Increment the actual tries var
-            self.actual_try = self.actual_try + 1
-
             # To get the actual row of the clicked button, I just divide it by 3, for the row I just use a modulo 3,
             # so I instantly get the right row. (need to math.ceil because values are often like 0.3333333)
             row = (button_id - 1) % 3
             col = math.ceil(button_id / 3)
-
-            # Check if someone won when tries hit 5
-            if self.actual_try >= 5:
-                self.Win_Check()
 
             # Add the clicked button object to the array (list) and change the current text by the current mark instead
             buttons_array[button_id - 1].configure(text=self.current_mark)
@@ -42,15 +37,71 @@ class Gameplay:
             # Add the current mark to the "actual board" array
             self.actual_board[col - 1][row] = self.current_mark
 
+            # Increment the actual tries var
+            self.current_try = self.current_try + 1
+
+            # Test
+            if self.Win_Check(self.current_mark):
+                print("won!")
+            else:
+                print("not won")
+
             # Know if it's actually X or O by using a modulo
-            if self.actual_try % 2 == 0:
+            if self.current_try % 2 == 0:
                 self.current_mark = "X"
             else:
                 self.current_mark = "O"
 
-            # Test
-            print(tabulate(self.actual_board, headers=['1', '2', '3']))
+    # Check if there's a winner (Credits: GeekFlare.com)
+    def Win_Check(self, current_mark):
+        # Get actual length of the game board
+        n = len(self.actual_board)
 
-    # Check if there's a winner
-    def Win_Check(self):
-        pass
+        # Check rows
+        for i in range(n):
+            self.game_win = True
+            for j in range(n):
+                if self.actual_board[i][j] != current_mark:
+                    self.game_win = False
+                    break
+            if self.game_win:
+                self.game_running = False
+                return self.game_win
+
+        # Check columns
+        for i in range(n):
+            self.game_win = True
+            for j in range(n):
+                if self.actual_board[j][i] != current_mark:
+                    self.game_win = False
+                    break
+            if self.game_win:
+                self.game_running = False
+                return self.game_win
+
+        # Check diagonals
+        self.game_win = True
+        for i in range(n):
+            if self.actual_board[i][i] != current_mark:
+                self.game_win = False
+                break
+        if self.game_win:
+            self.game_running = False
+            return self.game_win
+
+        # Check "reversed" rows, columns & diagonals
+        self.game_win = True
+        for i in range(n):
+            if self.actual_board[i][n - 1 - i] != current_mark:
+                self.game_win = False
+                break
+        if self.game_win:
+            self.game_running = False
+            return self.game_win
+
+        # Check for tie
+        self.game_win = False
+        if self.current_try >= 9:
+            print("tie :/")
+            self.game_running = False
+            return self.game_win
