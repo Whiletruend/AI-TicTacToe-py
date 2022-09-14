@@ -16,7 +16,7 @@ class Frame:
     def show(self):
         # Variables
         inc: int = 0
-        self.gameplay.game_running: bool = True
+        self.gameplay.game_running = True
 
         # Frame
         Game_Frame: tk = tk.Tk()
